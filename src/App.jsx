@@ -325,31 +325,31 @@ function WorkoutTracker() {
     );
 
     // --- Actions ---
-    const saveSetLog = (exId, setIndex, actualReps, weight) => {
+    // Batch Log Update
+    const updateBatchLog = (exId, setsInput, repsInput, weightInput) => {
         const logId = `w${currentWeek}-d${currentDay}-${exId}`;
 
         setLogs(prevLogs => {
-            // Get current log or initialize sets array
-            const currentLog = prevLogs[logId] || { sets: [] };
-            const currentSets = [...(currentLog.sets || [])];
+            const setsCount = parseInt(setsInput) || 0;
+            const repsCount = parseInt(repsInput) || 0;
 
-            // Update the specific set
-            currentSets[setIndex] = {
-                actualReps: parseInt(actualReps) || 0,
-                weight: weight,
-                completed: !!(actualReps || weight) // Mark as completed if any data is entered
-            };
-
-            const filteredSets = currentSets;
+            // Create new sets array based on batch input
+            const newSets = [];
+            for (let i = 0; i < setsCount; i++) {
+                newSets.push({
+                    actualReps: repsCount,
+                    weight: weightInput,
+                    completed: !!(repsCount && weightInput)
+                });
+            }
 
             const newData = {
                 week: currentWeek,
                 day: currentDay,
                 exerciseId: exId,
                 timestamp: new Date().toISOString(),
-                sets: filteredSets,
-                // The exercise is fully completed if the number of logged sets equals the target sets
-                completed: filteredSets.filter(s => s && s.completed).length >= (routine.find(ex => ex.id === exId)?.sets || 0),
+                sets: newSets,
+                completed: newSets.length >= (routine.find(ex => ex.id === exId)?.sets || 0) && newSets.every(s => s.completed),
             };
 
             const newLogs = {
@@ -481,7 +481,15 @@ function WorkoutTracker() {
                     {routine.map((ex) => {
                         const log = getLog(ex.id);
                         const isDone = log.completed;
-                        const setInputs = [...Array(ex.sets).keys()]; // Array [0, 1, 2, ...]
+
+                        // Default values for inputs
+                        const defaultSets = ex.sets;
+                        const defaultReps = parseInt(ex.reps.split('–')[0]) || 0;
+
+                        // Current values from log (take from first set if available, else defaults)
+                        const currentSetsVal = log.sets.length > 0 ? log.sets.length : defaultSets;
+                        const currentRepsVal = log.sets.length > 0 ? log.sets[0].actualReps : defaultReps;
+                        const currentWeightVal = log.sets.length > 0 ? log.sets[0].weight : '';
 
                         return (
                             <div
@@ -511,51 +519,44 @@ function WorkoutTracker() {
                                         </div>
                                     </div>
 
-                                    {/* Sets Grid */}
-                                    <div className="space-y-3 mt-4">
-                                        {setInputs.map((setIndex) => {
-                                            const setLog = log.sets[setIndex] || {};
-                                            const setCompleted = setLog.completed;
-                                            const repsLabelId = `reps-label-${ex.id}-${setIndex}`;
-                                            const weightLabelId = `weight-label-${ex.id}-${setIndex}`;
+                                    {/* Batch Input Row */}
+                                    <div className="mt-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                        <div className="flex gap-4">
+                                            {/* Sets Input */}
+                                            <div className="flex-1">
+                                                <label className="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Sets</label>
+                                                <input
+                                                    type="number"
+                                                    value={currentSetsVal}
+                                                    onChange={(e) => updateBatchLog(ex.id, e.target.value, currentRepsVal, currentWeightVal)}
+                                                    className="w-full text-center font-bold text-slate-700 bg-white border border-slate-200 rounded-md py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                                />
+                                            </div>
 
-                                            return (
-                                                <div key={setIndex} className={`flex gap-3 p-2 rounded-lg border transition-colors ${setCompleted ? 'bg-white border-blue-200' : 'bg-slate-50 border-slate-100'
-                                                    }`}>
-                                                    <div className={`w-10 flex-shrink-0 flex items-center justify-center rounded-full text-sm font-bold transition-all ${setCompleted ? 'bg-blue-500 text-white' : 'bg-slate-200 text-slate-600'
-                                                        }`}>
-                                                        S{setIndex + 1}
-                                                    </div>
+                                            {/* Reps Input */}
+                                            <div className="flex-1">
+                                                <label className="block text-[10px] font-bold text-slate-400 mb-1 uppercase">{ex.unit === 'sec' ? 'Secs' : 'Reps'}</label>
+                                                <input
+                                                    type="number"
+                                                    value={currentRepsVal}
+                                                    onChange={(e) => updateBatchLog(ex.id, currentSetsVal, e.target.value, currentWeightVal)}
+                                                    className="w-full text-center font-bold text-slate-700 bg-white border border-slate-200 rounded-md py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                                                />
+                                            </div>
 
-                                                    {/* Actual Reps Input */}
-                                                    <div className="flex-1">
-                                                        <label id={repsLabelId} className="block text-[10px] font-medium text-slate-400 mb-0.5 uppercase">Actual {ex.unit === 'sec' ? 'Time' : 'Reps'}</label>
-                                                        <input
-                                                            type="number"
-                                                            placeholder={ex.reps.split('–')[0]}
-                                                            value={setLog.actualReps || ''}
-                                                            onChange={(e) => saveSetLog(ex.id, setIndex, e.target.value, setLog.weight)}
-                                                            aria-labelledby={repsLabelId}
-                                                            className="w-full text-sm bg-transparent border-b border-slate-300 px-1 py-0.5 text-slate-800 font-medium focus:outline-none focus:border-blue-500 transition-all"
-                                                        />
-                                                    </div>
-
-                                                    {/* Weight Input */}
-                                                    <div className="flex-1">
-                                                        <label id={weightLabelId} className="block text-[10px] font-medium text-slate-400 mb-0.5 uppercase">Weight ({ex.unit === 'rounds' ? 'N/A' : 'kg/lbs'})</label>
-                                                        <input
-                                                            type="text"
-                                                            placeholder="e.g. 50kg"
-                                                            value={setLog.weight || ''}
-                                                            onChange={(e) => saveSetLog(ex.id, setIndex, setLog.actualReps, e.target.value)}
-                                                            disabled={ex.unit === 'rounds'} // Disable weight input for cardio rounds
-                                                            aria-labelledby={weightLabelId}
-                                                            className={`w-full text-sm border-b border-slate-300 px-1 py-0.5 font-medium focus:outline-none focus:border-blue-500 transition-all ${ex.unit === 'rounds' ? 'bg-slate-100 text-slate-400' : 'bg-transparent text-slate-800'}`}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            )
-                                        })}
+                                            {/* Weight Input */}
+                                            <div className="flex-[1.5]">
+                                                <label className="block text-[10px] font-bold text-slate-400 mb-1 uppercase">Weight ({ex.unit === 'rounds' ? 'N/A' : 'kg'})</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="kg"
+                                                    value={currentWeightVal}
+                                                    onChange={(e) => updateBatchLog(ex.id, currentSetsVal, currentRepsVal, e.target.value)}
+                                                    disabled={ex.unit === 'rounds'}
+                                                    className="w-full text-center font-bold text-slate-700 bg-white border border-slate-200 rounded-md py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:bg-slate-100 disabled:text-slate-400"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

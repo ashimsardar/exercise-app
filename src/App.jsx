@@ -318,6 +318,17 @@ function WorkoutTracker() {
         }
     });
 
+    // Date State - Lazy Initialization from LocalStorage
+    const [workoutDates, setWorkoutDates] = useState(() => {
+        try {
+            const saved = localStorage.getItem('workoutDates');
+            return saved ? JSON.parse(saved) : {};
+        } catch (e) {
+            console.error("Failed to parse workout dates", e);
+            return {};
+        }
+    });
+
     // Derived Routine from Plan
     const { routine, phaseName, phaseGoal } = useMemo(() =>
         getRoutine(currentWeek, currentDay),
@@ -359,6 +370,16 @@ function WorkoutTracker() {
 
             localStorage.setItem('workoutLogs', JSON.stringify(newLogs));
             return newLogs;
+        });
+    };
+
+    // Date Update
+    const updateWorkoutDate = (date) => {
+        const dateId = `w${currentWeek}-d${currentDay}`;
+        setWorkoutDates(prev => {
+            const newDates = { ...prev, [dateId]: date };
+            localStorage.setItem('workoutDates', JSON.stringify(newDates));
+            return newDates;
         });
     };
 
@@ -459,6 +480,17 @@ function WorkoutTracker() {
                                 </button>
                             )
                         })}
+                    </div>
+
+                    {/* Date Picker */}
+                    <div className="mt-4 pt-4 border-t border-slate-100">
+                        <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block">Workout Date</label>
+                        <input
+                            type="date"
+                            value={workoutDates[`w${currentWeek}-d${currentDay}`] || ''}
+                            onChange={(e) => updateWorkoutDate(e.target.value)}
+                            className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none"
+                        />
                     </div>
                 </div>
 

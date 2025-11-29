@@ -906,14 +906,32 @@ function WorkoutTracker({ user }) {
 
                 {/* Top Bar */}
                 <div className="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10 flex-shrink-0">
-                    <div className="flex items-center space-x-2">
-                        <div className="bg-blue-600 p-1.5 rounded-lg">
-                            <Weight className="w-5 h-5 text-white" />
+                    <div className="flex items-center space-x-3">
+                        {user?.photoURL ? (
+                            <img
+                                src={user.photoURL}
+                                alt={user.displayName}
+                                className="w-10 h-10 rounded-full border-2 border-slate-50 shadow-sm"
+                            />
+                        ) : (
+                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm border-2 border-slate-50 shadow-sm">
+                                {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
+                            </div>
+                        )}
+                        <div>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Welcome Back</p>
+                            <h1 className="text-sm font-extrabold text-slate-800">
+                                {user?.displayName ? user.displayName.split(' ')[0] : 'Athlete'}
+                            </h1>
                         </div>
-                        <span className="font-extrabold text-slate-800 tracking-tight text-lg">FitTrack<span className="text-blue-600">12</span></span>
                     </div>
-                    <div className="text-xs font-semibold text-slate-400">
-                        {activeTab === 'track' ? 'TRACKER' : activeTab === 'stats' ? 'ANALYTICS' : 'PROGRAM'}
+
+                    {/* Branding / Context */}
+                    <div className="text-right">
+                        <span className="font-extrabold text-slate-800 tracking-tight text-lg">FitTrack<span className="text-blue-600">12</span></span>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            {activeTab === 'track' ? 'Tracker' : activeTab === 'stats' ? 'Analytics' : 'Program'}
+                        </p>
                     </div>
                 </div>
 

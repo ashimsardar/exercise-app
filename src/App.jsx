@@ -13,6 +13,20 @@ import {
     Zap,
     Weight
 } from 'lucide-react';
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    BarChart,
+    Bar,
+    PieChart,
+    Pie,
+    Cell
+} from 'recharts';
 
 // --- WORKOUT PLAN CONSTANT ---
 const WORKOUT_PLAN = {
@@ -22,36 +36,36 @@ const WORKOUT_PLAN = {
         goal: 'Build form, joint strength, mobility, and base endurance.',
         workouts: {
             'Day 1': [
-                { id: 'p1d1-1', name: 'Flat Dumbbell Bench Press', sets: 3, reps: '12–15', unit: 'reps' },
-                { id: 'p1d1-2', name: 'Incline Machine Press', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p1d1-3', name: 'Dumbbell Shoulder Press', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p1d1-4', name: 'Lateral Raises', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p1d1-5', name: 'Rope Tricep Pushdowns', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p1d1-6', name: 'Plank Hold', sets: 3, reps: '45', unit: 'sec' },
+                { id: 'p1d1-1', name: 'Flat Dumbbell Bench Press', sets: 3, reps: '12–15', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p1d1-2', name: 'Incline Machine Press', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p1d1-3', name: 'Dumbbell Shoulder Press', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p1d1-4', name: 'Lateral Raises', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p1d1-5', name: 'Rope Tricep Pushdowns', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Arms' },
+                { id: 'p1d1-6', name: 'Plank Hold', sets: 3, reps: '45', unit: 'sec', muscleGroup: 'Core' },
             ],
             'Day 2': [
-                { id: 'p1d2-1', name: 'Goblet Squats', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p1d2-2', name: 'Romanian Deadlift (Light Dumbbells)', sets: 3, reps: '12–15', unit: 'reps' },
-                { id: 'p1d2-3', name: 'Leg Press', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p1d2-4', name: 'Bodyweight Walking Lunges', sets: 2, reps: '15', unit: 'each leg' },
-                { id: 'p1d2-5', name: 'Standing Calf Raises', sets: 3, reps: '15–20', unit: 'reps' },
-                { id: 'p1d2-6', name: 'Hanging Knee Raises', sets: 3, reps: '15', unit: 'reps' },
+                { id: 'p1d2-1', name: 'Goblet Squats', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p1d2-2', name: 'Romanian Deadlift (Light Dumbbells)', sets: 3, reps: '12–15', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p1d2-3', name: 'Leg Press', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p1d2-4', name: 'Bodyweight Walking Lunges', sets: 2, reps: '15', unit: 'each leg', muscleGroup: 'Legs' },
+                { id: 'p1d2-5', name: 'Standing Calf Raises', sets: 3, reps: '15–20', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p1d2-6', name: 'Hanging Knee Raises', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Core' },
             ],
             'Day 3': [
-                { id: 'p1d3-1', name: 'Lat Pulldown', sets: 3, reps: '12–15', unit: 'reps' },
-                { id: 'p1d3-2', name: 'Seated Row', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p1d3-3', name: 'Dumbbell One-Arm Row', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p1d3-4', name: 'Face Pulls', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p1d3-5', name: 'Bicep Curls', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p1d3-6', name: 'Hammer Curls', sets: 2, reps: '15', unit: 'reps' },
+                { id: 'p1d3-1', name: 'Lat Pulldown', sets: 3, reps: '12–15', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p1d3-2', name: 'Seated Row', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p1d3-3', name: 'Dumbbell One-Arm Row', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p1d3-4', name: 'Face Pulls', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p1d3-5', name: 'Bicep Curls', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Arms' },
+                { id: 'p1d3-6', name: 'Hammer Curls', sets: 2, reps: '15', unit: 'reps', muscleGroup: 'Arms' },
             ],
             'Day 4': [
-                { id: 'p1d4-1', name: 'Kettlebell Deadlift', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p1d4-2', name: 'Front Squat (light barbell)', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p1d4-3', name: 'Push-ups', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p1d4-4', name: 'Plank to Push-up', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p1d4-5', name: 'Russian Twists', sets: 3, reps: '20', unit: 'reps' },
-                { id: 'p1d4-6', name: 'Cardio Finisher (Row/Sprint)', sets: 8, reps: '20 sec on / 40 sec off', unit: 'rounds' },
+                { id: 'p1d4-1', name: 'Kettlebell Deadlift', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p1d4-2', name: 'Front Squat (light barbell)', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p1d4-3', name: 'Push-ups', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p1d4-4', name: 'Plank to Push-up', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Core' },
+                { id: 'p1d4-5', name: 'Russian Twists', sets: 3, reps: '20', unit: 'reps', muscleGroup: 'Core' },
+                { id: 'p1d4-6', name: 'Cardio Finisher (Row/Sprint)', sets: 8, reps: '20 sec on / 40 sec off', unit: 'rounds', muscleGroup: 'Cardio' },
             ],
         },
     },
@@ -61,36 +75,36 @@ const WORKOUT_PLAN = {
         goal: 'Build muscle size & shape.',
         workouts: {
             'Day 1': [
-                { id: 'p2d1-1', name: 'Barbell Bench Press', sets: 4, reps: '8–10', unit: 'reps' },
-                { id: 'p2d1-2', name: 'Incline Dumbbell Press', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p2d1-3', name: 'Overhead Barbell Press', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p2d1-4', name: 'Dumbbell Lateral Raises', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p2d1-5', name: 'Cable Chest Fly', sets: 2, reps: '12–15', unit: 'reps' },
-                { id: 'p2d1-6', name: 'Tricep Dips', sets: 3, reps: '12', unit: 'reps' },
+                { id: 'p2d1-1', name: 'Barbell Bench Press', sets: 4, reps: '8–10', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p2d1-2', name: 'Incline Dumbbell Press', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p2d1-3', name: 'Overhead Barbell Press', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p2d1-4', name: 'Dumbbell Lateral Raises', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p2d1-5', name: 'Cable Chest Fly', sets: 2, reps: '12–15', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p2d1-6', name: 'Tricep Dips', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Arms' },
             ],
             'Day 2': [
-                { id: 'p2d2-1', name: 'Back Squats', sets: 4, reps: '8–10', unit: 'reps' },
-                { id: 'p2d2-2', name: 'Romanian Deadlift', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p2d2-3', name: 'Leg Press (Feet Medium)', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p2d2-4', name: 'Weighted Walking Lunges', sets: 3, reps: '12', unit: 'each leg' },
-                { id: 'p2d2-5', name: 'Standing Calf Raise', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p2d2-6', name: 'Hanging Leg Raises', sets: 3, reps: '15', unit: 'reps' },
+                { id: 'p2d2-1', name: 'Back Squats', sets: 4, reps: '8–10', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p2d2-2', name: 'Romanian Deadlift', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p2d2-3', name: 'Leg Press (Feet Medium)', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p2d2-4', name: 'Weighted Walking Lunges', sets: 3, reps: '12', unit: 'each leg', muscleGroup: 'Legs' },
+                { id: 'p2d2-5', name: 'Standing Calf Raise', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p2d2-6', name: 'Hanging Leg Raises', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Core' },
             ],
             'Day 3': [
-                { id: 'p2d3-1', name: 'Deadlift', sets: 4, reps: '6–8', unit: 'reps' },
-                { id: 'p2d3-2', name: 'Pull-Ups / Assisted', sets: 3, reps: '8–10', unit: 'reps' },
-                { id: 'p2d3-3', name: 'Seated Cable Row', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p2d3-4', name: 'Lat Pulldown (Wide Grip)', sets: 3, reps: '12', unit: 'reps' },
-                { id: 'p2d3-5', name: 'Barbell Bicep Curl', sets: 3, reps: '10–12', unit: 'reps' },
-                { id: 'p2d3-6', name: 'Hammer Curl', sets: 2, reps: '12–15', unit: 'reps' },
+                { id: 'p2d3-1', name: 'Deadlift', sets: 4, reps: '6–8', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p2d3-2', name: 'Pull-Ups / Assisted', sets: 3, reps: '8–10', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p2d3-3', name: 'Seated Cable Row', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p2d3-4', name: 'Lat Pulldown (Wide Grip)', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p2d3-5', name: 'Barbell Bicep Curl', sets: 3, reps: '10–12', unit: 'reps', muscleGroup: 'Arms' },
+                { id: 'p2d3-6', name: 'Hammer Curl', sets: 2, reps: '12–15', unit: 'reps', muscleGroup: 'Arms' },
             ],
             'Day 4': [
-                { id: 'p2d4-1', name: 'Power Clean (light technique work)', sets: 3, reps: '6', unit: 'reps' },
-                { id: 'p2d4-2', name: 'Front Squat', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p2d4-3', name: 'Dumbbell Push Press', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p2d4-4', name: 'Kettlebell Swings', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p2d4-5', name: 'Russian Twists', sets: 3, reps: '20', unit: 'reps' },
-                { id: 'p2d4-6', name: 'Treadmill Sprints', sets: 10, reps: '20 sec on / 40 sec off', unit: 'rounds' },
+                { id: 'p2d4-1', name: 'Power Clean (light technique work)', sets: 3, reps: '6', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p2d4-2', name: 'Front Squat', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p2d4-3', name: 'Dumbbell Push Press', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p2d4-4', name: 'Kettlebell Swings', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p2d4-5', name: 'Russian Twists', sets: 3, reps: '20', unit: 'reps', muscleGroup: 'Core' },
+                { id: 'p2d4-6', name: 'Treadmill Sprints', sets: 10, reps: '20 sec on / 40 sec off', unit: 'rounds', muscleGroup: 'Cardio' },
             ],
         },
     },
@@ -100,36 +114,36 @@ const WORKOUT_PLAN = {
         goal: 'Maximize strength, preserve muscle, and cut fat aggressively.',
         workouts: {
             'Day 1': [
-                { id: 'p3d1-1', name: 'Barbell Bench Press', sets: 5, reps: '5', unit: 'reps' },
-                { id: 'p3d1-2', name: 'Incline Barbell Press', sets: 4, reps: '6', unit: 'reps' },
-                { id: 'p3d1-3', name: 'Seated Dumbbell Shoulder Press', sets: 3, reps: '8', unit: 'reps' },
-                { id: 'p3d1-4', name: 'Weighted Dips', sets: 3, reps: '8', unit: 'reps' },
-                { id: 'p3d1-5', name: 'Overhead Tricep Extension', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p3d1-6', name: 'Plank + Weighted Hold', sets: 3, reps: '60', unit: 'sec' },
+                { id: 'p3d1-1', name: 'Barbell Bench Press', sets: 5, reps: '5', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p3d1-2', name: 'Incline Barbell Press', sets: 4, reps: '6', unit: 'reps', muscleGroup: 'Chest' },
+                { id: 'p3d1-3', name: 'Seated Dumbbell Shoulder Press', sets: 3, reps: '8', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p3d1-4', name: 'Weighted Dips', sets: 3, reps: '8', unit: 'reps', muscleGroup: 'Arms' },
+                { id: 'p3d1-5', name: 'Overhead Tricep Extension', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Arms' },
+                { id: 'p3d1-6', name: 'Plank + Weighted Hold', sets: 3, reps: '60', unit: 'sec', muscleGroup: 'Core' },
             ],
             'Day 2': [
-                { id: 'p3d2-1', name: 'Back Squat', sets: 5, reps: '5', unit: 'reps' },
-                { id: 'p3d2-2', name: 'Deadlift', sets: 4, reps: '5', unit: 'reps' },
-                { id: 'p3d2-3', name: 'Bulgarian Split Squat', sets: 3, reps: '8', unit: 'each leg' },
-                { id: 'p3d2-4', name: 'Leg Press', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p3d2-5', name: 'Standing Calf Raises', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p3d2-6', name: 'Ab Wheel Rollouts', sets: 3, reps: '12', unit: 'reps' },
+                { id: 'p3d2-1', name: 'Back Squat', sets: 5, reps: '5', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p3d2-2', name: 'Deadlift', sets: 4, reps: '5', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p3d2-3', name: 'Bulgarian Split Squat', sets: 3, reps: '8', unit: 'each leg', muscleGroup: 'Legs' },
+                { id: 'p3d2-4', name: 'Leg Press', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p3d2-5', name: 'Standing Calf Raises', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p3d2-6', name: 'Ab Wheel Rollouts', sets: 3, reps: '12', unit: 'reps', muscleGroup: 'Core' },
             ],
             'Day 3': [
-                { id: 'p3d3-1', name: 'Weighted Pull-Ups', sets: 4, reps: '6–8', unit: 'reps' },
-                { id: 'p3d3-2', name: 'Bent-Over Barbell Row', sets: 4, reps: '6–8', unit: 'reps' },
-                { id: 'p3d3-3', name: 'Seated Cable Row', sets: 3, reps: '8', unit: 'reps' },
-                { id: 'p3d3-4', name: 'Lat Pulldown (Narrow Grip)', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p3d3-5', name: 'Barbell Curls', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p3d3-6', name: 'Hammer Curls', sets: 2, reps: '12', unit: 'reps' },
+                { id: 'p3d3-1', name: 'Weighted Pull-Ups', sets: 4, reps: '6–8', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p3d3-2', name: 'Bent-Over Barbell Row', sets: 4, reps: '6–8', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p3d3-3', name: 'Seated Cable Row', sets: 3, reps: '8', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p3d3-4', name: 'Lat Pulldown (Narrow Grip)', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Back' },
+                { id: 'p3d3-5', name: 'Barbell Curls', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Arms' },
+                { id: 'p3d3-6', name: 'Hammer Curls', sets: 2, reps: '12', unit: 'reps', muscleGroup: 'Arms' },
             ],
             'Day 4': [
-                { id: 'p3d4-1', name: 'Clean & Press', sets: 4, reps: '6', unit: 'reps' },
-                { id: 'p3d4-2', name: 'Front Squat', sets: 3, reps: '8', unit: 'reps' },
-                { id: 'p3d4-3', name: 'Kettlebell Snatch', sets: 3, reps: '12', unit: 'each arm' },
-                { id: 'p3d4-4', name: 'Box Jumps', sets: 3, reps: '10', unit: 'reps' },
-                { id: 'p3d4-5', name: 'Hanging Leg Raises', sets: 3, reps: '15', unit: 'reps' },
-                { id: 'p3d4-6', name: 'Finisher: Row Sprint', sets: 12, reps: '20 sec on / 40 sec rest', unit: 'rounds' },
+                { id: 'p3d4-1', name: 'Clean & Press', sets: 4, reps: '6', unit: 'reps', muscleGroup: 'Shoulders' },
+                { id: 'p3d4-2', name: 'Front Squat', sets: 3, reps: '8', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p3d4-3', name: 'Kettlebell Snatch', sets: 3, reps: '12', unit: 'each arm', muscleGroup: 'Legs' },
+                { id: 'p3d4-4', name: 'Box Jumps', sets: 3, reps: '10', unit: 'reps', muscleGroup: 'Legs' },
+                { id: 'p3d4-5', name: 'Hanging Leg Raises', sets: 3, reps: '15', unit: 'reps', muscleGroup: 'Core' },
+                { id: 'p3d4-6', name: 'Finisher: Row Sprint', sets: 12, reps: '20 sec on / 40 sec rest', unit: 'rounds', muscleGroup: 'Cardio' },
             ],
         },
     },
@@ -157,6 +171,128 @@ const getRoutine = (week, day) => {
     }
 
     return { routine, phaseName, phaseGoal };
+};
+
+// --- Analytics Helpers ---
+
+// Epley Formula: 1RM = Weight * (1 + Reps/30)
+const calculateOneRepMax = (weight, reps) => {
+    if (!weight || !reps) return 0;
+    const w = parseFloat(weight);
+    const r = parseFloat(reps);
+    if (isNaN(w) || isNaN(r)) return 0;
+    return Math.round(w * (1 + r / 30));
+};
+
+const getVolumeData = (logs) => {
+    const weeklyVolume = Array(12).fill(0).map((_, i) => ({ week: i + 1, volume: 0 }));
+
+    Object.values(logs).forEach(log => {
+        const weekIndex = log.week - 1;
+        if (weekIndex >= 0 && weekIndex < 12) {
+            let logVolume = 0;
+            log.sets.forEach(set => {
+                if (set && set.completed && set.weight && set.actualReps) {
+                    const w = parseFloat(set.weight);
+                    const r = parseFloat(set.actualReps);
+                    if (!isNaN(w) && !isNaN(r)) {
+                        logVolume += w * r;
+                    }
+                }
+            });
+            weeklyVolume[weekIndex].volume += logVolume;
+        }
+    });
+
+    return weeklyVolume;
+};
+
+const getStrengthData = (logs, exerciseId) => {
+    const data = [];
+    // Iterate through all logs to find entries for this exercise
+    Object.values(logs).forEach(log => {
+        if (log.exerciseId === exerciseId) {
+            // Find max 1RM for this session
+            let max1RM = 0;
+            log.sets.forEach(set => {
+                if (set && set.completed) {
+                    const oneRM = calculateOneRepMax(set.weight, set.actualReps);
+                    if (oneRM > max1RM) max1RM = oneRM;
+                }
+            });
+            if (max1RM > 0) {
+                data.push({
+                    date: `W${log.week}D${log.day}`,
+                    oneRM: max1RM,
+                    week: log.week
+                });
+            }
+        }
+    });
+    // Sort by week/day (simplified by week for now)
+    return data.sort((a, b) => a.week - b.week);
+};
+
+const getMuscleSplitData = (logs) => {
+    const split = {};
+
+    Object.values(logs).forEach(log => {
+        // Find exercise in plan to get muscle group
+        // This is expensive, so we'll do a quick lookup
+        let muscleGroup = 'Other';
+        // Iterate phases to find exercise
+        for (const phase of Object.values(WORKOUT_PLAN)) {
+            for (const dayWorkouts of Object.values(phase.workouts)) {
+                const ex = dayWorkouts.find(e => e.id === log.exerciseId);
+                if (ex) {
+                    muscleGroup = ex.muscleGroup || 'Other';
+                    break;
+                }
+            }
+            if (muscleGroup !== 'Other') break;
+        }
+
+        if (!split[muscleGroup]) split[muscleGroup] = 0;
+        // Count sets
+        const completedSets = log.sets.filter(s => s && s.completed).length;
+        split[muscleGroup] += completedSets;
+    });
+
+    return Object.entries(split).map(([name, value]) => ({ name, value }));
+};
+
+const getPersonalRecords = (logs) => {
+    const prs = {}; // { exerciseName: { weight: 100, date: 'W1D1' } }
+
+    Object.values(logs).forEach(log => {
+        let exerciseName = '';
+        // Find exercise name
+        for (const phase of Object.values(WORKOUT_PLAN)) {
+            for (const dayWorkouts of Object.values(phase.workouts)) {
+                const ex = dayWorkouts.find(e => e.id === log.exerciseId);
+                if (ex) {
+                    exerciseName = ex.name;
+                    break;
+                }
+            }
+            if (exerciseName) break;
+        }
+
+        if (!exerciseName) return;
+
+        log.sets.forEach(set => {
+            if (set && set.completed && set.weight) {
+                const w = parseFloat(set.weight);
+                if (!isNaN(w)) {
+                    if (!prs[exerciseName] || w > prs[exerciseName].weight) {
+                        prs[exerciseName] = { weight: w, date: `W${log.week} D${log.day}` };
+                    }
+                }
+            }
+        });
+    });
+
+    return Object.entries(prs).map(([name, data]) => ({ name, ...data }));
 };
 
 // --- Main App Component ---
@@ -430,9 +566,9 @@ function WorkoutTracker() {
         );
     };
 
-    // 2. STATS VIEW (remains the same)
+    // 2. STATS VIEW (UPDATED)
     const renderStats = () => {
-        // Generate simple chart data
+        // Data Preparation
         const weeklyData = [...Array(12)].map((_, i) => {
             let completedDays = 0;
             for (let d = 1; d <= 4; d++) {
@@ -441,8 +577,16 @@ function WorkoutTracker() {
             return completedDays;
         });
 
+        const volumeData = getVolumeData(logs);
+        const muscleSplitData = getMuscleSplitData(logs);
+        const prs = getPersonalRecords(logs);
+
+        // Colors for Pie Chart
+        const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
         return (
-            <div className="space-y-6 pb-24">
+            <div className="space-y-8 pb-24">
+                {/* Header Stats */}
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
                         <Trophy className="w-8 h-8 text-yellow-600" />
@@ -454,6 +598,7 @@ function WorkoutTracker() {
                     </div>
                 </div>
 
+                {/* 1. Consistency Heatmap */}
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <h3 className="font-bold text-slate-800 mb-6 flex items-center">
                         <Activity className="w-5 h-5 mr-2 text-blue-500" />
@@ -468,13 +613,95 @@ function WorkoutTracker() {
                                 />
                                 <div className="h-1 w-full bg-slate-100 mt-1"></div>
                                 <span className="text-[10px] text-slate-400 mt-2 font-medium">{i + 1}</span>
-
-                                {/* Tooltip */}
                                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                                     {count}/4 Days
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+
+                {/* 2. Volume Load Chart */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 className="font-bold text-slate-800 mb-6 flex items-center">
+                        <TrendingUp className="w-5 h-5 mr-2 text-purple-500" />
+                        Volume Load (kg)
+                    </h3>
+                    <div className="h-64 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={volumeData}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                <XAxis dataKey="week" tickLine={false} axisLine={false} tick={{ fontSize: 12 }} />
+                                <YAxis hide />
+                                <Tooltip
+                                    cursor={{ fill: '#f1f5f9' }}
+                                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                />
+                                <Bar dataKey="volume" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                {/* 3. Muscle Split Pie Chart */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 className="font-bold text-slate-800 mb-6 flex items-center">
+                        <Dumbbell className="w-5 h-5 mr-2 text-indigo-500" />
+                        Training Split (Sets)
+                    </h3>
+                    <div className="h-64 w-full flex items-center justify-center">
+                        {muscleSplitData.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <PieChart>
+                                    <Pie
+                                        data={muscleSplitData}
+                                        cx="50%"
+                                        cy="50%"
+                                        innerRadius={60}
+                                        outerRadius={80}
+                                        paddingAngle={5}
+                                        dataKey="value"
+                                    >
+                                        {muscleSplitData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="text-slate-400 text-sm">No data yet</div>
+                        )}
+                    </div>
+                    {/* Legend */}
+                    <div className="flex flex-wrap justify-center gap-3 mt-4">
+                        {muscleSplitData.map((entry, index) => (
+                            <div key={index} className="flex items-center text-xs text-slate-600">
+                                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                                {entry.name}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* 4. Personal Records Board */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 className="font-bold text-slate-800 mb-6 flex items-center">
+                        <Trophy className="w-5 h-5 mr-2 text-yellow-500" />
+                        Personal Records
+                    </h3>
+                    <div className="space-y-3">
+                        {prs.length > 0 ? prs.map((pr, i) => (
+                            <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <span className="font-medium text-sm text-slate-700">{pr.name}</span>
+                                <div className="text-right">
+                                    <span className="block font-bold text-slate-900">{pr.weight} kg</span>
+                                    <span className="text-[10px] text-slate-400">{pr.date}</span>
+                                </div>
+                            </div>
+                        )) : (
+                            <div className="text-center text-slate-400 text-sm py-4">Log your lifts to see PRs!</div>
+                        )}
                     </div>
                 </div>
             </div>

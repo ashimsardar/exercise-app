@@ -926,12 +926,21 @@ function WorkoutTracker({ user }) {
                         </div>
                     </div>
 
-                    {/* Branding / Context */}
-                    <div className="text-right">
-                        <span className="font-extrabold text-slate-800 tracking-tight text-lg">FitTrack<span className="text-blue-600">12</span></span>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            {activeTab === 'track' ? 'Tracker' : activeTab === 'stats' ? 'Analytics' : 'Program'}
-                        </p>
+                    {/* Branding / Context / Sign Out */}
+                    <div className="flex items-center space-x-3">
+                        <div className="text-right hidden sm:block">
+                            <span className="font-extrabold text-slate-800 tracking-tight text-lg">FitTrack<span className="text-blue-600">12</span></span>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                {activeTab === 'track' ? 'Tracker' : activeTab === 'stats' ? 'Analytics' : 'Program'}
+                            </p>
+                        </div>
+                        <button
+                            onClick={handleSignOut}
+                            className="p-2 bg-slate-100 text-slate-500 rounded-full hover:bg-slate-200 transition-colors"
+                            aria-label="Sign Out"
+                        >
+                            <LogOut className="w-5 h-5" />
+                        </button>
                     </div>
                 </div>
 
